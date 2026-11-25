@@ -11,8 +11,28 @@ public final class TestPlugin extends JavaPlugin {
         getLogger().info("TestPluginが起動しました！");
 
         registerCommand("hello",(source, args) -> {
+            String message = "こんにちは！";
+            String name = source.getSender().getName();
+
             source.getSender().sendMessage(
-                    Component.text("こんにちは！")
+                    Component.text(message + name + "さん！")
+            );
+        });
+
+        registerCommand("whoami",(source, args) -> {
+            String message = "あなたの名前は";
+            String name = source.getSender().getName();
+
+            source.getSender().sendMessage(
+                    Component.text(message + name + "です！")
+            );
+        });
+
+        registerCommand("test",(source, args) -> {
+            String message = "テスト成功！";
+
+            source.getSender().sendMessage(
+                    Component.text(message)
             );
         });
     }
