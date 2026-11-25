@@ -5,12 +5,22 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
 
+import java.awt.desktop.QuitResponse;
+
 public final class TestPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
         // プラグインの起動処理
         getLogger().info("TestPluginが起動しました！");
+
+        //イベントリスナーの登録
+        getServer().getPluginManager().registerEvents(
+                new JoinListener(), this
+        );
+        getServer().getPluginManager().registerEvents(
+                new QuitListener(), this
+        );
 
         //コマンド
         registerCommand("hello", (source, args) -> {
