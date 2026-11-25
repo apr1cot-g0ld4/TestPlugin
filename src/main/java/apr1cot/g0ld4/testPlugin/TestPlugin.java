@@ -146,6 +146,8 @@ public final class TestPlugin extends JavaPlugin {
                     Component.text("OP権限：" + op)
             );
         });
+
+        //コマンド
         registerCommand("add", (source, args) -> {
             if (args.length != 2) {
                 source.getSender().sendMessage(
@@ -171,6 +173,43 @@ public final class TestPlugin extends JavaPlugin {
                         Component.text("計算結果が大きすぎるか、小さすぎます。")
                 );
             }
+        });
+
+        //コマンド
+        registerCommand("players",(source,args) -> {
+            int count = Bukkit.getOnlinePlayers().size();
+
+            source.getSender().sendMessage(
+                    Component.text("オンライン人数：" + count)
+            );
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                source.getSender().sendMessage(
+                        Component.text("- " + player.getName())
+                );
+            }
+        });
+
+        //コマンド
+        registerCommand("announce", (source, args) -> {
+            if (!source.getSender().isOp()) {
+                source.getSender().sendMessage(
+                        Component.text("権限がありません。")
+                );
+                return;
+            }
+           if (args.length == 0) {
+               source.getSender().sendMessage(
+                       Component.text("使い方：/announce <メッセージ>")
+               );
+               return;
+           }
+           String message = String.join(" ", args);
+
+           for (Player player : Bukkit.getOnlinePlayers()) {
+               player.sendMessage(
+                       Component.text("[お知らせ] "+ message)
+               );
+           }
         });
     }
 
