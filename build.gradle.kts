@@ -23,7 +23,7 @@ bukkitPluginYaml {
 
     load = BukkitPluginYaml.PluginLoadOrder.STARTUP
     authors.addAll("apr1cot-g0ld4")
-    website = "https://github.com/apr1cot-g0ld4"
+    website = "https://github.com/apr1cot-g0ld4/TestPlugin"
 }
 
 java {
