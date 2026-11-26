@@ -4,8 +4,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
-
-import java.awt.desktop.QuitResponse;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import net.kyori.adventure.text.format.NamedTextColor;
+import java.util.List;
+import org.bukkit.NamespacedKey;
+import org.bukkit.persistence.PersistentDataType;
 
 public final class TestPlugin extends JavaPlugin {
 
@@ -21,6 +26,96 @@ public final class TestPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(
                 new QuitListener(), this
         );
+        getServer().getPluginManager().registerEvents(
+                new CompassListener(this), this
+        );
+        getServer().getPluginManager().registerEvents(
+                new BlockListener(), this
+        );
+        getServer().getPluginManager().registerEvents(
+                new PaperListener(), this
+        );
+
+        //コマンド
+        registerCommand("guide",(source,args) -> {
+            if (!(source.getSender() instanceof Player player)) {
+                source.getSender().sendMessage(
+                        Component.text("プレイヤー専用のコマンドです。")
+                );
+                return;
+            }
+            ItemStack item = new ItemStack(Material.COMPASS);
+            ItemMeta meta = item.getItemMeta();
+            meta.lore(List.of(
+                    Component.text(
+                            "冒険者に与えられる特別な道具。",
+                            NamedTextColor.GRAY
+                    ),
+                    Component.text(
+                            "右クリック：現在位置を確認",
+                            NamedTextColor.AQUA
+                    )
+            ));
+
+            NamespacedKey key = new NamespacedKey(this, "guide_compass");
+
+            meta.getPersistentDataContainer().set(
+                    key,
+                    PersistentDataType.INTEGER,
+                    1
+            );
+
+            item.setItemMeta(meta);
+            if (player.getInventory().addItem(item).isEmpty()) {
+                player.sendMessage(
+                        Component.text("コンパスを受け取りました。")
+                );
+            } else {
+                player.sendMessage(
+                        Component.text("インベントリがいっぱいです。")
+                );
+            }
+        });
+
+        //コマンド
+        registerCommand("certificate",(source,args) -> {
+            if (!(source.getSender() instanceof Player player)) {
+                source.getSender().sendMessage(
+                        Component.text("プレイヤー専用のコマンドです。")
+                );
+                return;
+            }
+            ItemStack item = new ItemStack(Material.PAPER);
+            ItemMeta meta = item.getItemMeta();
+            meta.lore(List.of(
+                    Component.text(
+                            "冒険者の証",
+                            NamedTextColor.GOLD
+                    ),
+                    Component.text(
+                            "冒険者ギルドの会員証"
+                    )
+            ));
+
+            NamespacedKey key = new NamespacedKey(this, "adventurer_certificate");
+
+            meta.getPersistentDataContainer().set(
+                    key,
+                    PersistentDataType.INTEGER,
+                    1
+            );
+
+            item.setItemMeta(meta);
+            if (player.getInventory().addItem(item).isEmpty()) {
+                player.sendMessage(
+                        Component.text("紙を受け取りました。")
+                );
+            } else {
+                player.sendMessage(
+                        Component.text("インベントリがいっぱいです。")
+                );
+            }
+        });
 
         //コマンド
         registerCommand("hello", (source, args) -> {
